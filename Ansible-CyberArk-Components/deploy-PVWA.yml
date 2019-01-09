@@ -1,0 +1,13 @@
+---
+ - name: Install a PVWA
+   hosts: PVWAs
+   roles:
+    - pvwa
+ - vars:
+     #pvwa_extract: true
+     pvwa_prerequisites: true
+     pvwa_install: true
+     pvwa_postinstall: true
+     pvwa_hardening: true
+     pvwa_registration: true
+     pvwa_validateparameters: true

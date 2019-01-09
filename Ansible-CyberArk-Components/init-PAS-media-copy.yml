@@ -1,0 +1,7 @@
+---
+ - name: Copy PAS install media from remote server to CPM
+   hosts: CPMs
+   tasks: 
+    - win_copy: 
+        src: "//home//kieran//Documents//Ansible-CyberArk//Central Policy Manager.zip"
+        dest: C:\Users\Administrator\Desktop\
