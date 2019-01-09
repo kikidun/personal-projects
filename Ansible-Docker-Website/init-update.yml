@@ -1,0 +1,13 @@
+---
+ - hosts: webservers
+   remote_user: deploy
+   become: yes
+   tasks:
+   - name: Enable the EPEL repository
+     yum:
+       name: epel-release
+       state: latest
+   - name: Update all installed packages
+     yum:
+       name: '*'
+       state: latest

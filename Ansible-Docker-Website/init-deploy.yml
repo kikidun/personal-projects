@@ -1,0 +1,26 @@
+---
+ - hosts: webservers 
+   remote_user: root
+   tasks:
+   - name: Create a 'deploy' user on target host
+     user:                      # Selects the user module
+       name: deploy
+       password: '$6$rnHD7xhtnSa8oHAm$ccgY.e91BRJjxDN8fHuJRaHNIocj.lkZSHOshbkBsnp/Ll7lR7h4A9/IEbbwtxDUYC60ypD/UB031amAYdw/t0'
+       groups:
+       - wheel
+       state: present
+       shell: /bin/bash          # Defaults to /bin/bash
+       system: no                # Defaults to no
+       createhome: yes           # Defaults to yes
+       home: /home/deploy        # Defaults to /home/USERNAME 
+   - name: Add an authorized key for the deploy user
+     authorized_key:             # Selects the authorized_keys module
+       user: deploy
+       state: present
+       key: "{{ lookup('file', '/home/kieran/.ssh/practice_deploy.pub') }}"
+   - name: Enable passwordless sudo for the wheel group 
+     lineinfile:                 # Selects the lineinfile module
+       dest: "/etc/sudoers"
+       state: present
+       regexp: '^%wheel\s'
+       line: '%wheel ALL=(ALL) NOPASSWD: ALL'

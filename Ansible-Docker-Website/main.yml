@@ -1,0 +1,11 @@
+---
+ - name: Primary playbook for ground up CentOS Docker build
+   hosts: webservers
+   remote_user: root
+   vars:
+   - ansible_ssh_pass: Cyberark1
+ - import_playbook: add-key.yml
+ - import_playbook: init-deploy.yml
+ - import_playbook: init-update.yml
+ - import_playbook: init-docker.yml
+ - import_playbook: build-site.yml

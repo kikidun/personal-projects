@@ -1,0 +1,36 @@
+---
+- name: Deploy web infrastructure containers
+  hosts: webservers
+  remote_user: deploy
+  tasks:
+  - name: Pull the httpd image
+    docker_image:
+      name: httpd
+  - name: Pull the nginx image
+    docker_image:
+      name: nginx
+  - name: Copying the reverse proxy config from controller
+    copy:
+      src: /home/kieran/ansible/nginx.conf
+      dest: /home/deploy/ 
+  - name: Creating bridge network
+    docker_network:
+      name: kiki-net
+      state: present
+  - name: Deploying the back end apache server
+    docker_container:
+      name: back-end-web-server
+      image: httpd
+      networks: 
+      - name: kiki-net 
+      published_ports: 8080:80
+      state: started
+  - name: Deploying the front end NGINX reverse proxy server
+    docker_container:
+      name: reverse-proxy
+      image: nginx
+      networks:
+      - name: kiki-net 
+      published_ports: 80:80
+      state: started
+      volumes: /home/deploy/nginx.conf:/etc/nginx/nginx.conf:ro

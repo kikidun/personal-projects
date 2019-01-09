@@ -1,0 +1,17 @@
+---
+ - name: Download and install Docker CE
+   hosts: webservers
+   remote_user: deploy
+   tasks:
+   - name: Check if Docker is installed
+     stat:
+       path: /usr/bin/docker
+     register: docker_installed
+   - debug:
+       msg: "Looks like there is no Docker directory! Better install it..."
+     when: docker_installed.stat.isdir is not defined and docker_installed.stat.isdir == False
+   - debug:
+       msg: "I see Docker!!"
+     when: docker_installed.stat.isdir is defined and docker_installed.stat.isdir
+
+

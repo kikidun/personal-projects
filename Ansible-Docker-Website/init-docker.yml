@@ -1,0 +1,39 @@
+---
+ - name: Download and install Docker CE
+   hosts: webservers
+   remote_user: deploy
+   tasks: 
+    - name: Check if Docker is installed
+      stat:
+        path: /usr/bin/docker
+      register: docker_dir
+    - name: Download and install Docker
+      shell: curl -fsSL https://get.docker.com/ | sh | tee dockerinstalllog.txt
+      when: docker_dir.stat.exists == False
+    - name: Add deploy to the docker group
+      become: yes
+      user:
+        name: deploy
+        groups: docker
+        state: present
+    - name: Enable Docker on startup
+      become: yes
+      service:
+        name: docker
+        enabled: yes
+    - name: Start the Docker daemon
+      become: yes
+      service:
+        name: docker
+        state: started
+    - name: Install python-pip
+      become: yes
+      yum:
+        name: python-pip
+        state: present
+    - name: Install docker for python
+      become: yes
+      shell: pip install docker
+    - name: Reset connection for new group membership to apply
+      meta: reset_connection
+
