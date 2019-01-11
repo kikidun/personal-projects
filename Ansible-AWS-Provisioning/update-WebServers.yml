@@ -1,0 +1,13 @@
+---
+ - hosts: tag_Name_WebServer
+   remote_user: centos  
+   become: yes
+   tasks:
+   - name: Enable the EPEL repository
+     yum:
+       name: epel-release
+       state: present
+   - name: Update all installed packages
+     yum:
+       name: '*'
+       state: latest

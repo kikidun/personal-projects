@@ -1,0 +1,8 @@
+---
+- name: Deploy two CentOS Machines as webservers
+  hosts: localhost
+  remote_user: centos
+- include: deploy-single-ec2-instance.yml
+- include: update-WebServers.yml
+- include: init-docker.yml
+- include: build-site-infra.yml

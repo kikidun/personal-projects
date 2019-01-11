@@ -9,10 +9,10 @@
       ec2:
         key_name: dev-network
         instance_type: t2.micro
-        image: ami-011b3ccf1bd6db744
+        image: ami-9887c6e7
         group: kikicloud-public
         wait: true
-        count: "{{ num }}"
+        count: 2 #"{{ num }}"
         vpc_subnet_id: subnet-0ade37adde413715a
         assign_public_ip: yes
         aws_access_key: "{{ vault_ec2_access_key }}"
@@ -20,4 +20,10 @@
         region: us-east-1
         instance_tags:
           Name: WebServer #"{{ nametag }}"
+          Env: Dev
+          OS: CentOS
       register: ec2
+    - name: Hold on a darn second for those instances to get tagged
+      pause:
+        minutes: 1
+
