@@ -12,12 +12,12 @@
         image: ami-011b3ccf1bd6db744
         group: kikicloud-public
         wait: true
-        count: 1
+        count: "{{ num }}"
         vpc_subnet_id: subnet-0ade37adde413715a
         assign_public_ip: yes
         aws_access_key: "{{ vault_ec2_access_key }}"
         aws_secret_key: "{{ vault_ec2_secret_key }}"
         region: us-east-1
         instance_tags:
-          Name: Demo-Ansible-3
+          Name: WebServer #"{{ nametag }}"
       register: ec2
